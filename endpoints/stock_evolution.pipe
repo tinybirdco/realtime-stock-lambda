@@ -1,6 +1,52 @@
 DESCRIPTION >
    Get stock evolution by location and status
 
+NODE relatime_changes
+SQL >
+    %
+    WITH (select max(snapshot_id) from stock_snapshots_raw) as max_snapshot_id
+    SELECT
+       item_id,
+       location,
+       status,
+       quantity,
+       created_at,
+       updated_at,
+       snapshot_id
+   FROM stock_events_snapshot FINAL
+   where snapshot_id = max_snapshot_id + INTERVAL 5 MINUTE
+   {% if defined(warehouse) %}
+       AND location = {{String(warehouse)}}
+   {% end %}
+
+
+NODE historic_snapshot
+SQL >
+    %
+    WITH (Select max(snapshot_id) from stock_snapshots_raw) as max_snapshot_id
+    SELECT
+       item_id,
+       location,
+       status,
+       quantity,
+       created_at,
+       updated_at,
+       snapshot_id
+   FROM stock_snapshots_raw
+   where snapshot_id = max_snapshot_id
+   and (item_id, location, status) NOT IN (SELECT item_id, location, status FROM relatime_changes)
+   {% if defined(warehouse) %}
+       AND location = {{String(warehouse)}}
+   {% end %}
+
+NODE current_snapshot
+SQL >
+    
+    SELECT * FROM relatime_changes
+    union all
+    SELECT * FROM historic_snapshot
+   
+
 NODE endpoint
 SQL >
    %
@@ -17,7 +63,10 @@ SQL >
    {% if agg=='daily'%}
        stock_snapshots_daily
    {% else %}
-       stock_snapshots_raw
+       (select * from stock_snapshots_raw 
+        union all 
+        select * from current_snapshot
+        )
    {% end %}
    where snapshot_id between {{DateTime(start_date)}} and {{DateTime(end_date)}}
    {% if defined(warehouse) %}
