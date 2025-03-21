@@ -1,0 +1,18 @@
+DESCRIPTION >
+   Generate daily snapshots
+
+NODE generate_daily_snapshots_node
+SQL >
+
+   SELECT
+       snapshot_id,
+       location,
+       status,
+       sumState(quantity) as total_quantity
+   FROM stock_snapshots_raw s
+   where snapshot_id = toStartOfDay(now())
+   group by snapshot_id, location, status
+
+
+TYPE MATERIALIZED
+DATASOURCE stock_snapshots_agg_daily

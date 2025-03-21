@@ -1,0 +1,14 @@
+DESCRIPTION >
+   Daily snapshots of stock inventory aggregated by location and status
+   
+SCHEMA >
+  
+   `snapshot_id` DateTime64(3),
+   `location` String,
+   `status` String,
+   `total_quantity` AggregateFunction(sum, Int32)
+  
+ENGINE "AggregatingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMMDD(snapshot_id)"
+ENGINE_SORTING_KEY "snapshot_id, location, status"
+

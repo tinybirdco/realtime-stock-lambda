@@ -1,0 +1,21 @@
+
+DESCRIPTION >
+   Materialized pipe to assign snapshot_id to each stock event
+   
+NODE stock_events_with_snapshot_node
+SQL >
+   SELECT
+       item_id,
+       location,
+       status,
+       quantity,
+       created_at,
+       updated_at,
+       toStartOfInterval(updated_at, INTERVAL 300 SECOND) + INTERVAL 300 SECOND as snapshot_id
+   FROM stock_changes
+
+
+TYPE MATERIALIZED
+DATASOURCE stock_events_snapshot
+
+        

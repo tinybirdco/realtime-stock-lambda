@@ -1,0 +1,10 @@
+{"item_id": "ITEM_637", "location": "CHI", "status": "out_of_stock", "quantity": 637, "created_at": "2025-03-21 06:56:17", "updated_at": "2025-03-21 06:56:17"}
+{"item_id": "ITEM_629", "location": "SEA", "status": "out_of_stock", "quantity": 629, "created_at": "2025-03-21 08:33:05", "updated_at": "2025-03-21 08:33:05"}
+{"item_id": "ITEM_82", "location": "CHI", "status": "low_stock", "quantity": 82, "created_at": "2025-03-21 02:35:32", "updated_at": "2025-03-21 02:35:32"}
+{"item_id": "ITEM_217", "location": "CHI", "status": "out_of_stock", "quantity": 217, "created_at": "2025-03-20 11:46:37", "updated_at": "2025-03-20 23:46:37"}
+{"item_id": "ITEM_301", "location": "LAX", "status": "out_of_stock", "quantity": 301, "created_at": "2025-03-20 22:01:53", "updated_at": "2025-03-21 10:01:53"}
+{"item_id": "ITEM_55", "location": "NYC", "status": "reserved", "quantity": 55, "created_at": "2025-03-21 02:39:19", "updated_at": "2025-03-21 02:39:19"}
+{"item_id": "ITEM_85", "location": "NYC", "status": "out_of_stock", "quantity": 85, "created_at": "2025-03-21 06:38:49", "updated_at": "2025-03-21 06:38:49"}
+{"item_id": "ITEM_685", "location": "NYC", "status": "out_of_stock", "quantity": 685, "created_at": "2025-03-20 13:32:09", "updated_at": "2025-03-21 01:32:09"}
+{"item_id": "ITEM_514", "location": "SEA", "status": "low_stock", "quantity": 514, "created_at": "2025-03-20 18:15:00", "updated_at": "2025-03-21 06:15:00"}
+{"item_id": "ITEM_515", "location": "NYC", "status": "reserved", "quantity": 515, "created_at": "2025-03-20 12:58:19", "updated_at": "2025-03-21 00:58:19"}

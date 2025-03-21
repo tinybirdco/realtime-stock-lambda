@@ -1,0 +1,41 @@
+DESCRIPTION >
+   Generate raw snapshots every 5 minutes
+   
+NODE realtime_snapshot
+SQL >
+   WITH (select max(snapshot_id) from stock_snapshots_raw) as max_snapshot_id
+   SELECT
+       item_id,
+       location,
+       status,
+       quantity,
+       created_at,
+       updated_at,
+       snapshot_id
+   FROM stock_events_snapshot FINAL
+   where snapshot_id = max_snapshot_id + INTERVAL 5 MINUTE
+
+NODE historic_snapshot
+SQL >
+       WITH (Select max(snapshot_id) from stock_snapshots_raw) as max_snapshot_id
+   SELECT
+       item_id,
+       location,
+       status,
+       quantity,
+       created_at,
+       updated_at,
+       snapshot_id
+   FROM stock_events_snapshot FINAL
+   where snapshot_id = max_snapshot_id
+   and (item_id, location, status) NOT IN (SELECT item_id, location, status FROM realtime_snapshot)
+
+NODE generate_raw_snapshot
+SQL >
+    select * from realtime_snapshot
+    union all
+    select * from historic_snapshot
+
+TYPE copy
+TARGET_DATASOURCE stock_snapshots_raw
+COPY_SCHEDULE */5 * * * *

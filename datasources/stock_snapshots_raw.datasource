@@ -1,0 +1,17 @@
+DESCRIPTION >
+   Raw snapshots of stock inventory with 7 days TTL
+
+SCHEMA >
+   `item_id` String,
+   `location` String,
+   `status` String,
+   `quantity` Int32 ,
+   `created_at` DateTime64(3),
+   `updated_at` DateTime64(3),
+   `snapshot_id` DateTime64(3)
+
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMMDD(snapshot_id)"
+ENGINE_SORTING_KEY "snapshot_id, location, status, item_id"
+ENGINE_TTL "toDateTime(snapshot_id) + INTERVAL 5 DAY"

@@ -1,0 +1,15 @@
+DESCRIPTION >
+   Landing datasource for stock inventory changesç
+
+SCHEMA >
+   `item_id` String `json:$.item_id`,
+   `location` String `json:$.location`,
+   `status` String `json:$.status`,
+   `quantity` Int32 `json:$.quantity`,
+   `created_at` DateTime64(3) `json:$.created_at`,
+   `updated_at` DateTime64(3) `json:$.updated_at`
+
+
+ENGINE "MergeTree"
+ENGINE_PARTITION_KEY "toYYYYMM(created_at)"
+ENGINE_SORTING_KEY "updated_at, location, status"

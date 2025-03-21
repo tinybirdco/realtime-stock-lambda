@@ -1,0 +1,28 @@
+DESCRIPTION >
+   Get stock evolution by location and status
+
+NODE endpoint
+SQL >
+   %
+   SELECT 
+       snapshot_id,
+       location,
+       status,
+       {% if agg=='daily'%}
+       sumMerge(total_quantity) as available_stock
+       {% else %}
+       sum(quantity) as available_stock
+       {% end %}
+   from
+   {% if agg=='daily'%}
+       stock_snapshots_daily
+   {% else %}
+       stock_snapshots_raw
+   {% end %}
+   where snapshot_id between {{DateTime(start_date)}} and {{DateTime(end_date)}}
+   {% if defined(warehouse) %}
+       AND location = {{String(warehouse)}}
+   {% end %}
+   GROUP BY snapshot_id, location, status
+
+TYPE endpoint

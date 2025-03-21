@@ -1,0 +1,18 @@
+DESCRIPTION >
+   Stock events with snapshot_id assigned
+
+SCHEMA >
+   `item_id` String,
+   `location` String,
+   `status` String,
+   `quantity` Int32,
+   `created_at` DateTime64(3),
+   `updated_at` DateTime64(3),
+   `snapshot_id` DateTime64(3)
+
+
+ENGINE "ReplacingMergeTree"
+ENGINE_PARTITION_KEY "toYYYYMMDD(updated_at)"
+ENGINE_SORTING_KEY "snapshot_id, location, status, item_id"
+ENGINE_VER "updated_at"
+ENGINE_TTL "toDateTime(snapshot_id) + toIntervalDay(7)"
